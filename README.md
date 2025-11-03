@@ -1,13 +1,14 @@
 # StyloSpeaker
-Stylometric speaker attribution from speech transcripts
+Stylometric speaker attribution from speech transcripts.
 
 This is the official repo for the StyloSpeaker paper (link coming soon). This code is setup to extract stylometric features from the Fisher speech transcripts corpus, specifically the speaker verification trials from the paper [Can Authorship Attribution Models Distinguish Speakers in Speech Transcripts?](https://arxiv.org/abs/2311.07564) and its associated [GitHub](https://github.com/caggazzotti/speech-attribution), but can be adapted to other speech transcript datasets.  
 
 ## Data 
 
-To obtain the Fisher speaker verification trials used in the paper, follow the directions in [Attribution of Transcribed Speech](https://github.com/caggazzotti/speech-attribution). NOTE: The Fisher data require an LDC subscription to [Fisher English Training Speech Part 1 Transcripts](https://catalog.ldc.upenn.edu/LDC2004T19) and [Fisher English Training Part 2 Transcripts](https://catalog.ldc.upenn.edu/LDC2005T19).
+To obtain the Fisher speaker verification trials used in the paper, follow the directions in the [attribution of transcribed speech GitHub](https://github.com/caggazzotti/speech-attribution). 
+*NOTE: The Fisher data require an LDC subscription to [Fisher English Training Speech Part 1 Transcripts](https://catalog.ldc.upenn.edu/LDC2004T19) and [Fisher English Training Part 2 Transcripts](https://catalog.ldc.upenn.edu/LDC2005T19).
 
-To use your own speech transcript data, put the data in the following verification trial format, where label 0 is for negative (different speaker) trials and 1 is for positive (same speaker) trials. The value for each "call" key is a list of utterances for a particular speaker in a call. Do this for both the training trials and the test trials.
+To use your own speech transcript data, put the data in the following verification trial format, where label `0` is for negative (different speaker) trials and `1` is for positive (same speaker) trials. The value for each "call" key is a list of utterances for a particular speaker in a call. Do this for both the training trials and the test trials.
 
 ```
  trials = [{"label": 0,
@@ -53,14 +54,14 @@ To run feature extraction for the verification trials and evaluate the classifie
 
   ```python stylometric_analysis.py config.yaml```
 
-This will produce the following files:
+This will produce the following files (for each encoding and level):
 
-- feature pipeline (.pkl)
-- X_train, X_test (.npz)
-- y_train, y_test (.pkl)
-- classifier fitted on the training data (.joblib)
-- results file (.txt)
-- feature importances (.csv)
+- feature pipeline (`.pkl`)
+- X_train, X_test (`.npz`)
+- y_train, y_test (`.pkl`)
+- classifier fitted on the training data (`.joblib`)
+- results file (`.txt`)
+- feature importances (`.csv`)
 
 ## Citation
 If you use our benchmark in your work, please consider citing our paper: (coming soon)
