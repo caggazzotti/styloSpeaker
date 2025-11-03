@@ -9,13 +9,15 @@ To obtain the Fisher speaker verification trials used in the paper, follow the d
 
 To use your own speech transcript data, put the data in the following verification trial format, where label 0 is for negative (different speaker) trials and 1 is for positive (same speaker) trials. The value for each "call" key is a list of utterances for a particular speaker in a call. Do this for both the training trials and the test trials.
 
-  trials = [{"label": 0,
+```
+ trials = [{"label": 0,
             "call 1": ["utterance 1", "utterance 2",...],
             "call 2": ["utterance 1", "utterance 2",...]},
             {"label": 1,
             "call 1": ["utterance 1", "utterance 2",...],
             "call 2": ["utterance 1", "utterance 2",...]},
             ...]
+  ```
 
 ## Installation
 
@@ -29,15 +31,15 @@ To create an environment with the required packages, run the following commands 
 ## Setup
 The absolute paths for the overarching working directory for this project, the output directory (a subfolder of the overarching working directory), and the verification trials data (in the format shown above) need to be manually added by modifying the following path variables in `config.yaml`:
 
-- work_dir: overarching project directory (./styloSpeaker)
-- output_dir: subfolder of work_dir for outputting the results (./styloSpeaker/output)
-- trials_dir: directory containing the verification trials data (./speech-attribution/trials_data if using Fisher data)
+- work_dir: overarching project directory (`./styloSpeaker`)
+- output_dir: subfolder of work_dir for outputting the results (`./styloSpeaker/output`)
+- trials_dir: directory containing the verification trials data (`./speech-attribution/trials_data` if using Fisher data)
 
 Adjust the other variables in the `config.yaml` file as needed:
 
-- encodings: BBN = text-like; LDC = lowercase, limited punctuation (specifically for Fisher data)
-- levels: base, hard, harder (difficulty levels based on amount of topic control; specifically for Fisher data)
-- feat_combos: which method to use for combining features between two sides of a trial; diffabs = absolute difference between features (worked best for Fisher)
+- encodings: `bbn` = text-like; `ldc` = lowercase, limited punctuation (specifically for Fisher data)
+- levels: `base`, `hard`, `harder` (difficulty levels based on amount of topic control; specifically for Fisher data)
+- feat_combos: which method to use for combining features between two sides of a trial; `diffabs` = absolute difference between features (worked best for Fisher)
 - char_ngram_range: character n-gram range inclusive
 - tok_ngram_range: token n-gram range inclusive
 - pos_ngram_range: POS tag n-gram range inclusive
@@ -49,7 +51,7 @@ The features should be extracted using a GPU if available.
 
 To run feature extraction for the verification trials and evaluate the classifier's performance, run the following:
 
-  python stylometric_analysis.py config.yaml
+  ```python stylometric_analysis.py config.yaml```
 
 This will produce the following files:
 
