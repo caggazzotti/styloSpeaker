@@ -10,7 +10,6 @@ import yaml
 import time
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import Pipeline, FeatureUnion
@@ -62,7 +61,7 @@ def get_pairs_labels(trials):
 ### Preprocess documents to include raw string, tokens, and POS tags
 def preprocess_texts(unique_texts):
 	nlp = stanza.Pipeline(lang='en', processors='tokenize,pos', use_gpu=True,
-						pos_batch_size=500)
+						pos_batch_size=500, download_method=None)
 	### Stanzafy docs all together for faster processing
 	in_docs = [stanza.Document([], text=t) for t in unique_texts] #wrap each w/stanza.Document obj
 	stanza_docs = nlp(in_docs) 
@@ -164,7 +163,7 @@ def get_feat_names(doc_feature_pipeline, feat_combos):
 	stylo_names = fitted_stylo.get_feature_names_out()
 
 	### Prep all features for feature importance
-	if feat_combos == 'feats': #only individual features 
+	if feat_combos == 'concat': #concatenate features from each side of a trial
 		all_feat_names = [ 
 			f"char1_{f}" for f in char_names
 		] + [
@@ -182,16 +181,7 @@ def get_feat_names(doc_feature_pipeline, feat_combos):
 		] + [
 			f"stylo2_{f}" for f in stylo_names
 		] 
-	elif feat_combos == 'diff': #difference of features b/t sides of trials
-		all_feat_names = [f"diff_char_{f}" for f in char_names
-		] + [
-			f"diff_tok_{f}" for f in token_names
-		] + [
-			f"diff_pos_{f}" for f in pos_names
-		] + [
-			f"diff_stylo_{f}" for f in stylo_names
-		] 
-	elif feat_combos == 'diffabs': #absolute difference of features b/t sides of trials
+	elif feat_combos == 'diffabs': #take absolute difference of features b/t sides of trials
 		all_feat_names = [f"diffabs_char_{f}" for f in char_names
 		] + [
 			f"diffabs_tok_{f}" for f in token_names
@@ -200,7 +190,7 @@ def get_feat_names(doc_feature_pipeline, feat_combos):
 		] + [
 			f"diffabs_stylo_{f}" for f in stylo_names
 		] 
-	elif feat_combos == 'featsdiffabs': #individual features + absolute difference of features b/t sides of trials
+	elif feat_combos == 'concatdiffabs': #concatenate individual features + take the absolute difference of features b/t sides of trials
 		all_feat_names = [
 			f"char1_{f}" for f in char_names
 		] + [
@@ -226,25 +216,7 @@ def get_feat_names(doc_feature_pipeline, feat_combos):
 		] + [
 			f"diffabs_stylo_{f}" for f in stylo_names
 		] 
-	### More complex interactions between features
-	elif feat_combos == 'diffprod': #diff and product of features b/t sides of trials
-		#tried diffprod_wb but got the same results as diffprod
-		all_feat_names = [f"diff_char_{f}" for f in char_names
-		] + [
-			f"diff_tok_{f}" for f in token_names
-		] + [
-			f"diff_pos_{f}" for f in pos_names
-		] + [
-			f"diff_stylo_{f}" for f in stylo_names
-		] + [
-			f"prod_char_{f}" for f in char_names
-		] + [
-			f"prod_tok_{f}" for f in token_names
-		] + [
-			f"prod_pos_{f}" for f in pos_names
-		] + [
-			f"prod_stylo_{f}" for f in stylo_names
-		]
+	### More complex interaction between features
 	elif feat_combos == 'diffabsprod': #absolute diff and prod of feats b/t sides of trials
 		all_feat_names = [f"diffabs_char_{f}" for f in char_names
 		] + [
@@ -253,40 +225,6 @@ def get_feat_names(doc_feature_pipeline, feat_combos):
 			f"diffabs_pos_{f}" for f in pos_names
 		] + [
 			f"diffabs_stylo_{f}" for f in stylo_names
-		] + [
-			f"prod_char_{f}" for f in char_names
-		] + [
-			f"prod_tok_{f}" for f in token_names
-		] + [
-			f"prod_pos_{f}" for f in pos_names
-		] + [
-			f"prod_stylo_{f}" for f in stylo_names
-		]
-	elif feat_combos == 'featsdiffprod': #individual feats + diff + prod of feats b/t sides of trials
-		all_feat_names = [ 
-			f"char1_{f}" for f in char_names
-		] + [
-			f"token1_{f}" for f in token_names
-		] + [
-			f"pos1_{f}" for f in pos_names
-		] + [
-			f"stylo1_{f}" for f in stylo_names
-		] + [
-			f"char2_{f}" for f in char_names
-		] + [
-			f"token2_{f}" for f in token_names
-		] + [
-			f"pos2_{f}" for f in pos_names
-		] + [
-			f"stylo2_{f}" for f in stylo_names
-		] + [
-			f"diff_char_{f}" for f in char_names
-		] + [
-			f"diff_tok_{f}" for f in token_names
-		] + [
-			f"diff_pos_{f}" for f in pos_names
-		] + [
-			f"diff_stylo_{f}" for f in stylo_names
 		] + [
 			f"prod_char_{f}" for f in char_names
 		] + [
@@ -332,6 +270,9 @@ def main(cfg):
 	tok_ngram_range = tuple(cfg['tok_ngram_range'])
 	pos_ngram_range = tuple(cfg['pos_ngram_range'])
 	which_clf = cfg['which_clf']
+
+	if not os.path.exists(out_dir):
+		os.makedirs(out_dir)
 
 	### Build the feature extraction pipeline
 	doc_feature_pipeline = FeatureUnion([
@@ -463,7 +404,9 @@ def main(cfg):
 					"feature": all_feat_names,
 					"importance": importances
 					})
-				importance_df = importance_df.sort_values('importance', ascending=False)
+				## Add absolute coefficient column to get overall impact of feature regardless of whether it contributes to the positive or negative class
+				importance_df["abs_impt"] = importance_df["importance"].abs()
+				importance_df = importance_df.sort_values("abs_impt", ascending=False)
 				importance_df.to_csv(impt_outfile, index=False)
 			
 			toc = time.perf_counter()
