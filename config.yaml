@@ -1,12 +1,12 @@
 ---
 work_dir: './styloSpeaker'
-out_dir: '/styloSpeaker/output'
+out_dir: './styloSpeaker/output'
 trials_dir: './speech-attribution/trials_data'
 
 ### For extracting features:
 encodings: ['bbn','ldc'] #'bbn','ldc'
-levels: ['base', 'hard', 'harder'] #'base', 'hard', 'harder'
-feat_combos: 'diffabs' #feats,diff,diffabs,featsdiffabs,diffprod,diffabsprod,featsdiffprod
+levels: ['base','hard','harder'] #'base','hard','harder'
+feat_combos: 'diffabs' #concat,diffabs,concatdiffabs,diffabsprod
 char_ngram_range: [3,6]
 tok_ngram_range: [1,3]
 pos_ngram_range: [1,3]
