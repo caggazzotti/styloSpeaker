@@ -26,9 +26,9 @@ To use your own speech transcript data, put the data in the following verificati
 To create an environment with the required packages, run the following commands within the styloSpeaker directory:
 
 ```
-	conda create --name stylospkr python=3.9
-  conda install pip
-	pip install -r requirements.txt
+conda create --name stylospkr python=3.9
+conda install pip
+pip install -r requirements.txt
 ```
 
 **NOTE**: Not all of these packages are needed to run the basic code but were in the conda enviornment used for the experiments in the paper so were kept for continuity.
