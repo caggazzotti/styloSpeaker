@@ -19,7 +19,7 @@ To use your own speech transcript data, put the data in the following verificati
             "call 1": ["utterance 1", "utterance 2",...],
             "call 2": ["utterance 1", "utterance 2",...]},
             ...]
-  ```
+```
 
 ## Installation
 
@@ -56,7 +56,9 @@ The features should be extracted using a GPU if available.
 
 **Step 1**: To run feature extraction for the verification trials and evaluate the classifier's performance, run the following:
 
-  ```python stylometric_analysis.py config.yaml```
+```
+  python stylometric_analysis.py config.yaml
+```
 
 This will produce the following files (for each encoding and level):
 
@@ -69,7 +71,9 @@ This will produce the following files (for each encoding and level):
 
 **Step 2**: To produce heatmaps and negative vs. positive plots of the top features, run the following:
 
-  ```python analyze_feature_impt.py config.yaml```
+```
+  python analyze_feature_impt.py config.yaml
+```
 
 ## Citation
 If you use our benchmark in your work, please consider citing our paper: (coming soon)
