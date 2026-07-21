@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: styloSpeaker
+message: "If you use this software, please cite the associated paper."
+type: software
+
+authors:
+  - family-names: Aggazzotti
+    given-names: Cristina
+  - family-names: Smith
+    given-names: Elizabeth Allyn
+
+repository-code: https://github.com/caggazzotti/styloSpeaker
+
+license: GPL-3.0
+
+preferred-citation:
+  type: article
+  title: "A stylometric analysis of speaker attribution from speech transcripts"
+  authors:
+    - family-names: Aggazzotti
+      given-names: Cristina
+    - family-names: Smith
+      given-names: Elizabeth Allyn
+  year: 2025
+  doi: "10.48550/arXiv.2512.13667"
+  url: "https://arxiv.org/abs/2512.13667"
+  publisher:
+    name: arXiv
+  identifiers:
+    - type: arXiv
+      value: "2512.13667"
