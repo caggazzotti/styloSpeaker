@@ -76,6 +76,20 @@ This will produce the following files (for each encoding and level):
 ```
 
 ## Citation
-If you use our benchmark in your work, please consider citing our paper: (coming soon)
+If you use our benchmark in your work, please consider citing our paper: 
 
+    @misc{aggazzotti2025stylospeaker,
+       title={A stylometric analysis of speaker attribution from speech transcripts}, 
+       author={Cristina Aggazzotti and Elizabeth Allyn Smith},
+       year={2025},
+       eprint={2512.13667},
+       archivePrefix={arXiv},
+       primaryClass={cs.CL},
+       url={https://arxiv.org/abs/2512.13667}, 
+       doi={10.48550/arXiv.2512.13667},
+    }
+
+## License
+StyloSpeaker is distributed under the terms of the General Public License version 3 (GPL v3). All contributions must be made under the GPL v3 license.
+See LICENSE for details.
 
