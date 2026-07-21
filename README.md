@@ -90,6 +90,6 @@ If you use our benchmark in your work, please consider citing our paper:
     }
 
 ## License
-StyloSpeaker is distributed under the terms of the General Public License version 3 (GPL v3). All contributions must be made under the GPL v3 license.
+StyloSpeaker is distributed under the terms of the GNU General Public License v3.0 (GPL-3.0). All contributions must be made under the GPL-3.0 license.
 See LICENSE for details.
 
